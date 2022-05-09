@@ -27,7 +27,7 @@ export default class ExistingEmployee extends React.Component{
     handleSubmit = (e) => {
         e.preventDefault();
         
-            axios.post("http://localhost:5000/cred/signIn", {"enterprise_id": this.state.enterprise_id,
+            axios.post("http://localhost:5000/Credentials/signIn", {"enterprise_id": this.state.enterprise_id,
                                                                       "password": this.state.password})
             .then(res => {
                 console.log("You've logged in!!");  
@@ -61,7 +61,7 @@ export default class ExistingEmployee extends React.Component{
                 <button type = "submit"onClick={this.handleSubmit}>submit</button>
             </form>
             <hr/>
-            <a href="/">back to home page</a>
+            <a href="http://localhost:3000/HomePage#/HomePage">back to home page</a>
         </div>
         </center>
         );

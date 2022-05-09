@@ -82,7 +82,7 @@ export default class NewJoiner extends React.Component{
                 Reenter Password<input type="password" name="repassword" value={this.state.re_password} onChange={this.handleRePassword}/>
                 <br/>
             
-                <button type = "submit"onClick={this.handleSubmit}>Create Account</button>
+                <button type = "submit"onClick={this.handleSubmit}>submit</button>
             
             </form>
             <hr/>

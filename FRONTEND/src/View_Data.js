@@ -5,96 +5,94 @@ import axios from "axios";
 import * as XLSX from "xlsx";
 import FileSaver from "file-saver";
 
-class ViewData extends React.Component{
-    
-    constructor(props)
-    {
-        super(props); 
+class ViewData extends React.Component {
+
+    constructor(props) {
+        super(props);
         this.state = {
-            edit :false,
-            save:false,
+            edit: false,
+            save: false,
             data: []
-        }   
+        }
     }
 
     //GET DATA FROM DB 
-    componentDidMount()
-    {
+    componentDidMount() {
         console.log("Inside componentDidMount...");
         axios.get("http://localhost:5000/emp/getAllEmployees")
-        .then(res => {
-            console.log(res);
-            this.setState(()=> ({data: res.data}));
-            console.log((this.state.data));
-        }
-        )
-        .catch(err => {
-            console.log(err);
-        })
-        
-        
+            .then(res => {
+                console.log(res);
+                this.setState(() => ({ data: res.data }));
+                console.log((this.state.data));
+            }
+            )
+            .catch(err => {
+                console.log(err);
+            })
+
+
     }
 
     //INSERTING DATA INTO DB 
-    handleUpload =(e) => {
+    handleUpload = (e) => {
         console.log(this.state.data)
         console.log(this.state.data.length)
         console.log(this.state.data[0].years_of_exp)
-        axios.put("http://localhost:5000/emp/updateMultipleEmployeeData",{data:this.state.data})
-        .then(res => {
-            console.log(res);
-            console.log(typeof(res));
-        })
-        .catch(err => {console.log(err);})
+        axios.put("http://localhost:5000/emp/updateMultipleEmployeeData", { data: this.state.data })
+            .then(res => {
+                console.log(res);
+                console.log(typeof (res));
+            })
+            .catch(err => { console.log(err); })
     }
 
-    
+
     //DOWNLOAD IN EXCEL 
     writeData = () => {
-        const fileType =  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' ;
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
         const ws = XLSX.utils.json_to_sheet(this.state.data);
-        const wb = {Sheets: {"Sheet1": ws}, SheetNames:['Sheet1'] };
-        const excelBuffer =XLSX.write(wb, {bookType:"xlsx", type:"array" });    
-        const data = new Blob([excelBuffer], {type:fileType});
+        const wb = { Sheets: { "Sheet1": ws }, SheetNames: ['Sheet1'] };
+        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const data = new Blob([excelBuffer], { type: fileType });
         FileSaver.saveAs(data, "FIL_DATA_DOWNLOAD.xlsx");
-     }
+    }
 
-        //HANDLING ENTERPRISE ID 
-     handleEnterpriseId = (e) => {
+    //HANDLING ENTERPRISE ID 
+    handleEnterpriseId = (e) => {
         let i = e.target.getAttribute("index")
         const state_data = JSON.parse(JSON.stringify(this.state.data));
-        let data = e.target.value 
+        let data = e.target.value
         state_data[i]._id = data
-       console.log("Before ",this.state.data[i]._id);
-       this.setState({
+        console.log("Before ", this.state.data[i]._id);
+        this.setState({
             data: state_data
         })
         console.log(this.state.data[i]._id)
     }
 
     //HANDLING CAREER LEVEL
-    handleCareerLevel = (e) =>{
+    handleCareerLevel = (e) => {
         let i = e.target.getAttribute("index")
-        console.log(this.state.data[i].Career_Level);        
-       const state_data = JSON.parse(JSON.stringify(this.state.data))
+        console.log(this.state.data[i].Career_Level);
+        const state_data = JSON.parse(JSON.stringify(this.state.data))
         let data = e.target.value
         state_data[i].career_level = data
         console.log(state_data)
-       console.log("Before ",this.state.data[i].career_level);
-       console.log(i);
+        console.log("Before ", this.state.data[i].career_level);
+        console.log(i);
         this.setState({
-            data :state_data
+            data: state_data
         })
-        console.log("After ",this.state.data[i].career_level);
+        console.log("After ", this.state.data[i].career_level);
     }
-    
+
     //HANDLING ACCENTURE JOINING DATE 
-    handleAccentureJoiningDate =  (e) => {
+    handleAccentureJoiningDate = (e) => {
         let i = e.target.getAttribute("index")
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].acc_onboard_date = data
-       console.log("Before ",this.state.data[i].acc_onboard_date);
+        console.log("Before ", this.state.data[i].acc_onboard_date);
         this.setState({
             data: state_data
         })
@@ -102,13 +100,13 @@ class ViewData extends React.Component{
     }
 
     //HANDLING CLIENT JOINING DATE 
-    handleClientJoiningDate =  (e) => {
+    handleClientJoiningDate = (e) => {
         let i = e.target.getAttribute("index")
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].client_onboard_date = data
-       console.log("Before ",this.state.data[i].client_onboard_date);
-         this.setState({
+        console.log("Before ", this.state.data[i].client_onboard_date);
+        this.setState({
             data: state_data
         })
         console.log(this.state.data[i].client_onboard_date)
@@ -120,7 +118,7 @@ class ViewData extends React.Component{
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].years_of_exp = data
-       console.log("Before ",this.state.data[i].years_of_exp);
+        console.log("Before ", this.state.data[i].years_of_exp);
         this.setState({
             data: state_data
         })
@@ -133,7 +131,7 @@ class ViewData extends React.Component{
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].acc_leaving_date = data
-       console.log("Before ",this.state.data[i].acc_leaving_date);
+        console.log("Before ", this.state.data[i].acc_leaving_date);
         this.setState({
             data: state_data
         })
@@ -146,8 +144,8 @@ class ViewData extends React.Component{
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].client_leaving_date = data
-       console.log("Before ",this.state.data[i].client_leaving_date);
-         this.setState({
+        console.log("Before ", this.state.data[i].client_leaving_date);
+        this.setState({
             data: state_data
         })
         console.log(this.state.data[i].client_leaving_date)
@@ -159,7 +157,7 @@ class ViewData extends React.Component{
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].primary_skill = data
-       console.log("Before ",this.state.data[i].primary_skill);
+        console.log("Before ", this.state.data[i].primary_skill);
         this.setState({
             data: state_data
         })
@@ -172,7 +170,7 @@ class ViewData extends React.Component{
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].sub_skill = data
-       console.log("Before ",this.state.data[i].sub_skill);
+        console.log("Before ", this.state.data[i].sub_skill);
         this.setState({
             data: state_data
         })
@@ -185,17 +183,17 @@ class ViewData extends React.Component{
         const state_data = JSON.parse(JSON.stringify(this.state.data));
         let data = e.target.value
         state_data[i].background_verification_status = data
-       console.log("Before ",this.state.data[i].background_verification_status);
+        console.log("Before ", this.state.data[i].background_verification_status);
         this.setState({
             data: state_data
         })
         console.log(this.state.data[i].background_verification_status)
     }
 
-    
+
     //HANDLING EDIT TOGGLE 
     handleEditChange = () => {
-        this.setState((state)=>({
+        this.setState((state) => ({
             edit: !state.edit
         }))
         console.log(this.state.edit);
@@ -211,15 +209,15 @@ class ViewData extends React.Component{
             client_onboard_date: new Date(),
             acc_leaving_date: new Date(),
             client_leaving_date: new Date(),
-            primary_skill:' ',
-            sub_skill:' ',
-            background_verification_status:' '
+            primary_skill: ' ',
+            sub_skill: ' ',
+            background_verification_status: ' '
 
         };
         const temp = JSON.parse(JSON.stringify(this.state.data))
         temp.push(obj);
         console.log(obj);
-        this.setState((state)=>({
+        this.setState((state) => ({
             data: temp
         }));
         console.log(this.state.data);
@@ -230,79 +228,79 @@ class ViewData extends React.Component{
     handleDelete = (e) => {
         const i = e.target.getAttribute("index");
         const temp = JSON.parse(JSON.stringify(this.state.data))
-        temp.splice(i,1)
+        temp.splice(i, 1)
         console.log(temp)
-        this.setState((state)=>({
+        this.setState((state) => ({
             data: temp
         }))
         console.log(this.state.data)
     }
 
-    componentDidUpdate()
-     {
-         console.log("Updating..")
-         console.log(this.state.data);
-     }
+    componentDidUpdate() {
+        console.log("Updating..")
+        console.log(this.state.data);
+    }
 
-    render()
-    {
-        return(
-        <center>
+    render() {
+        return (
+            <center>
 
-        <div> Hi there!
-            
-            <table className="App">
-            <thead>
-            <tr>
-                <th>Enterprise Id</th>
-                <th>Career Level</th>
-                <th>Years of Experience</th>
-                <th>Accenture Joining Date</th>
-                <th>Client Joining Date</th>
-                <th>Accenture LWD</th>
-                <th>Client LWD</th>
-                <th>Skill</th>
-                <th>Sub Skill</th>
-                <th>Bakcground Verification Status</th>
-            </tr>
-            </thead>
-              
-                <tbody>
-                {this.state.data.map((db,i) => {return(
-                                    
-                                    <tr key={i}>
-                                    <td><input type="text" index = {i} value = {this.state.data[i]._id} onChange={this.handleEnterpriseId} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    
-                                    <td><select index ={i} value ={this.state.data[i].career_level} onChange={this.handleCareerLevel} disabled={(this.state.edit)?'':'disabled' } >
-                                     <option value={12}>12</option>
-                                        <option value={11}>11</option>
-                                        <option value={10}>10</option>
-                                        <option value={9}>9</option>
-                                        <option value={8}>8</option>
-                                    </select></td>
-                                    <td><input type="number" index ={i} value = {this.state.data[i].years_of_exp} onChange={this.handleYearsOfExperience} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="date" index ={i} value = {this.state.data[i].acc_onboard_date} onChange={this.handleAccentureJoiningDate} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="date" index ={i} value = {this.state.data[i].client_onboard_date} onChange={this.handleClientJoiningDate} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="date" index ={i} value = {this.state.data[i].acc_leaving_date} onChange={this.handleAccentureLWD} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="date" index ={i} value = {this.state.data[i].client_leaving_date} onChange={this.handleClientLWD} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="text" index ={i} value = {this.state.data[i].primary_skill} onChange={this.handleSkill} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="text" index ={i} value = {this.state.data[i].sub_skill} onChange={this.handleSubSkill} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><input type="text" index ={i} value = {this.state.data[i].background_verification_status} onChange={this.handleBackgroundVerificationStatus} disabled={(this.state.edit)?'':'disabled' }/></td>
-                                    <td><button onClick={this.handleDelete} index={i}>Delete Employee</button></td>
-                                    
-                            </tr>) } )}
+                <div> Hi there!
 
-                            <tr>{this.state.edit===false?<td><button onClick={this.handleEditChange}>Edit</button></td>:<td><button onClick={this.handleEditChange}>Save</button></td>}
-                            <td><button onClick={this.handleAdd}>Add Employee</button></td>
-                            
-                            <td><button onClick={this.handleUpload}>Update DB</button></td>
-                            <td><button onClick={this.writeData}>Download Excel</button></td>
+                    <table className="App">
+                        <thead>
+                            <tr>
+                                <th>Enterprise Id</th>
+                                <th>Career Level</th>
+                                <th>Years of Experience</th>
+                                <th>Accenture Joining Date</th>
+                                <th>Client Joining Date</th>
+                                <th>Accenture LWD</th>
+                                <th>Client LWD</th>
+                                <th>Skill</th>
+                                <th>Sub Skill</th>
+                                <th>Bakcground Verification Status</th>
                             </tr>
-                </tbody>        
-        </table> 
+                        </thead>
 
-        </div>
-        </center>
+                        <tbody>
+                            {this.state.data.map((db, i) => {
+                                return (
+
+                                    <tr key={i}>
+                                        <td><input type="text" index={i} value={this.state.data[i]._id} onChange={this.handleEnterpriseId} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+
+                                        <td><select index={i} value={this.state.data[i].career_level} onChange={this.handleCareerLevel} disabled={(this.state.edit) ? '' : 'disabled'} >
+                                            <option value={12}>12</option>
+                                            <option value={11}>11</option>
+                                            <option value={10}>10</option>
+                                            <option value={9}>9</option>
+                                            <option value={8}>8</option>
+                                        </select></td>
+                                        <td><input type="number" index={i} value={this.state.data[i].years_of_exp} onChange={this.handleYearsOfExperience} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="date" index={i} value={this.state.data[i].acc_onboard_date} onChange={this.handleAccentureJoiningDate} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="date" index={i} value={this.state.data[i].client_onboard_date} onChange={this.handleClientJoiningDate} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="date" index={i} value={this.state.data[i].acc_leaving_date} onChange={this.handleAccentureLWD} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="date" index={i} value={this.state.data[i].client_leaving_date} onChange={this.handleClientLWD} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="text" index={i} value={this.state.data[i].primary_skill} onChange={this.handleSkill} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="text" index={i} value={this.state.data[i].sub_skill} onChange={this.handleSubSkill} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><input type="text" index={i} value={this.state.data[i].background_verification_status} onChange={this.handleBackgroundVerificationStatus} disabled={(this.state.edit) ? '' : 'disabled'} /></td>
+                                        <td><button onClick={this.handleDelete} index={i}>Delete Employee</button></td>
+
+                                    </tr>)
+                            })}
+
+                            <tr>{this.state.edit === false ? <td><button onClick={this.handleEditChange}>Edit</button></td> : <td><button onClick={this.handleEditChange}>Save</button></td>}
+                                <td><button onClick={this.handleAdd}>Add Employee</button></td>
+
+                                <td><button onClick={this.handleUpload}>Update DB</button></td>
+                                <td><button onClick={this.writeData}>Download Excel</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </center>
         )
     }
 }

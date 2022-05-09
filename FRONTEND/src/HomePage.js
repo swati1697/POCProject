@@ -9,10 +9,8 @@ function App() {
       </div>
       <div className='btn'>
         <Link to='/NewJoiner'><button>New joiner</button></Link>|
-        <Link to='/about'><button>Existing Employee</button></Link>|
-        <Link to='/about'><button>Admin</button></Link>
-
-        
+        <Link to='/ExistingEmployee'><button>Existing Employee</button></Link>|
+        <Link to='/ExistingEmployee'><button>Admin</button></Link>
 
       </div>
       

@@ -8,6 +8,7 @@ export default class AdminPage extends React.Component
             <div>
                 <Link to='/ViewData'>  <button>View data</button> </Link>
                 <Link to='/AddData'><button >Upload Excel Data to DB</button></Link>
+                
             </div>
         )
     }
